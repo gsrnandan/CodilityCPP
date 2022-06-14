@@ -1,0 +1,74 @@
+// you can use includes, for example:
+// #include <algorithm>
+#include <vector>
+#include <cmath>
+#include <iostream>
+// you can write to stdout for debugging purposes, e.g.
+// cout << "this is a debug message" << endl;
+
+int solution(int N) 
+{
+    // write your code in C++14 (g++ 6.2.0)
+
+    auto dtob = [](int val)
+    {
+       std::vector<int> binary;
+       while(val > 1)
+       {
+           if(val%2)
+           {
+               binary.push_back(1);
+           }
+           else {
+                binary.push_back(0);
+           }
+           val = floor(val/2);
+       }
+       if(val==1)
+       {
+           binary.push_back(1);
+       }
+       else {
+           binary.push_back(0);
+       }
+       return binary;
+    };
+    
+    int max_zero = 0;
+    std::vector<int> binary = dtob(N);
+    vector<int>::const_iterator its = binary.begin();
+    bool init = false;
+    while(its != binary.end())
+    {
+        //std::cout << "\n loop start " << *its << '\n';
+        int temp_max_zero = 0;
+        if(*its == 1)
+        {
+            init = true;
+            its++;
+        }
+        if(init)
+        {
+            while(its != binary.end() and *its == 0)
+            {
+                //std::cout << "*its here " << *its << '\n';
+                temp_max_zero = temp_max_zero + 1;
+                its++;
+            }
+            if(its != binary.end() and *its==1)
+            {
+                max_zero = max(max_zero, temp_max_zero);
+            }  
+            //std::cout << "max_zero " << max_zero << '\n';
+            init = false;
+        }
+        else
+        {
+            its++;
+        }
+        //std::cout << "*its end " << *its << '\n';   
+    }
+
+     return max_zero;
+
+}
